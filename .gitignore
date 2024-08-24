@@ -1,0 +1,5 @@
+# other files
+other/
+
+# macOS
+.DS_Store
