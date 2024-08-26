@@ -1,5 +1,9 @@
 # other files
 other/
+pro/To_send_from_Kawano/補足資料/
 
 # macOS
 .DS_Store
+
+# zip files
+*.zip
