@@ -1,6 +1,7 @@
 ; this is sample code
 pro plot_sample
 ; Open the file
+; choose filename or the number in filename
 file = '../../To_send_from_Kawano/Example_data/rPw_dPh_vs_freq_movavr_by_02.txt'
 OPENR, lun, file, /GET_LUN
 
@@ -29,7 +30,7 @@ dPh = dPh[0:i-1]
 
 
 ; set the window and set two regions for the plots
-WINDOW, XSIZE=600, YSIZE=800
+WINDOW, XSIZE=500, YSIZE=700
 !p.multi = [0, 1, 2]
 
 ; plot the data
