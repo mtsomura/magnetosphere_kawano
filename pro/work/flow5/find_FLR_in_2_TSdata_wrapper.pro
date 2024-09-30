@@ -1,72 +1,89 @@
-compile_opt idl3
+;PRO find_FLR_in_2_TSdata_wrapper, rPw_dPh_file, Nmovavr
+    ; フォーマットされた文字列を作成
+    print,'Input Nmovavr'
+    read,Nmovavr
+    NmovavrTxt = STRING(Nmovavr, FORMAT='(I2.2)')
 
-pro copy_from_matlab, fname_input, Nmovavr
+    ; 出力ファイルの作成
+    OutFile = 'autoIDed_FLR_list.freq_movavr_by_' + NmovavrTxt + '.txt'
+    OPENW, lun_out, OutFile, /GET_LUN
 
-Nmovavr_txt = STRTRIM(STRING(Nmovavr, FORMAT='(I)'))
+    ; 入力ファイルの読み込み
+    InFile = 'rPw_dPh_vs_freq_movavr_by_' + NmovavrTxt + '.txt'
+    PRINT, InFile
+    
+    ; ファイルを開く
+    OPENR, unit, InFile , /GET_LUN
 
+    ; ファイル内容を読み込む
+    data = ''
+    text = ''
+    while not eof(unit) do begin
+        readf, unit, data
+        text = text + ' ' + data
+    endwhile
 
-fname_output = 'hogehoge' + Nmovavr_txt + '.txt'
-; hogehoge will be changed after discussing with Kawano-san
-; open output file as write
-OPENU, lun_output, fname_output, /GET_LUN
+    free_lun, unit
 
+    ; 区切りの文字列を数値配列に変換
+    numbers = float(strsplit(text, ' ', /extract))
 
-; open input file as read
-; the structure of input file is 3 columns: freq, rPw, dPh
-OPENR, lun_input, fname_input, /GET_LUN
+    ; 配列の要素数を確認
+    n_elements = N_ELEMENTS(numbers)
 
-; give the number of columns and rows
-n_row = SIZE(FILE_LINES(lun_input), /N_ELEMENTS)
-n_col = SIZE(STRSPLIT(READF(lun_input, 1), /EXTRACT), /N_ELEMENTS)
-PRINT, n_row, n_col
-; if the number of columns is smaller than 3, stop the program
-IF n_col LT 3 THEN BEGIN
-    PRINT, 'The number of columns is smaller than 3.'
-    RETURN
+    ; 要素数が3の倍数か確認
+    IF n_elements MOD 3 NE 0 THEN BEGIN
+        PRINT, 'エラー: 要素数が3の倍数ではありません。'
+        RETURN
+    ENDIF
 
-; set 3 arrays to store the data in the file
-freq = FLTARR(100)
-rPw = FLTARR(100)
-dPh = FLTARR(100)
+    ; 配列を3行に並び替える
+    n_row = n_elements / 3
+    f_rPw_dPh = REFORM(numbers, 3, n_row)
 
-; read the data from the file
-i = 0
-WHILE NOT EOF(lun) DO BEGIN
-    READF, lun, freqi, rPwi, dPhi
-    freq[i] = freqi
-    rPw[i] = rPwi
-    dPh[i] = dPhi
-    i = i + 1
-ENDWHILE
+    ; 結果を表示
+    PRINT, '3行に並び替えた配列:'
+    PRINT,  f_rPw_dPh
+    N_size = SIZE(f_rPw_dPh)
+    n_col = N_size[1]
+    print, 'n_row =', n_row
+    print, 'n_col =', n_col
+    freq = FLTARR(100)
+    rPw = FLTARR(100)
+    dPh = FLTARR(100)
 
-; close the file
-FREE_LUN, lun
+  
+    IF n_col LT 3 THEN BEGIN
+        PRINT, 'n_col<3'
+        
+    ENDIF
 
-; delete empty elements in the arrays
-freq = freq[0:i-1]
-rPw = rPw[0:i-1]
-dPh = dPh[0:i-1]
+    ; データの分割
+    freq = f_rPw_dPh[0 ,*]
+    rPw  = f_rPw_dPh[1 ,*]
+    dPh  = f_rPw_dPh[2 ,*]
+print, 'freq =' ,freq
+print, 'rPw =' ,rPw
+print, 'dPh =' ,dPh
 
-; make new function
-Nevents, Ev_datNos = find_FLR_in_SD_dRG(rPw, dPh)
-; now assuming Nevents and Ev_datNos are returned from the function, Nevents will be integer and Ev_datNos will be array of integers with 3 elements
+    ; FLRイベントの検出
+   ; find_FLR_in_SD_dRG, rPw, dPh
+    @find_FLR_in_SD_dRG
+    ; 検出されたイベントの処理
+   FOR jk = 0, Nevents-1 DO BEGIN
+        Nnow_rPwMax = Ev_datNos[0, jk]
+        Nnow_dPhMin = Ev_datNos[1, jk]
+        Nnow_rPwMin = Ev_datNos[2, jk]
 
-FOR i = 1, Nevents DO BEGIN
-    Nnow_rPwMax = Ev_datNos[i, 0]
-    Nnow_dPhMin = Ev_datNos[i, 1]
-    Nnow_rPwMin = Ev_datNos[i, 2]
-
-    ; write Nnow_rPwMax, Nnow_dPhMin, Nnow_rPwMin to the output file
-    WRITEF, lun_output, Nnow_rPwMax, Nnow_dPhMin, Nnow_rPwMin
-    ; write frequency matched to Nnow_rPwMax, Nnow_dPhMin, Nnow_rPwMin to the output file 
-    WRITEF, lun_output, freq[Nnow_rPwMax], freq[Nnow_dPhMin], freq[Nnow_rPwMin]
-    ; write rPw matched to Nnow_rPwMax, Nnow_dPhMin, Nnow_rPwMin to the output file
-    WRITEF, lun_output, rPw[Nnow_rPwMax], rPw[Nnow_dPhMin], rPw[Nnow_rPwMin]
-    ; write dPh matched to Nnow_rPwMax, Nnow_dPhMin, Nnow_rPwMin to the output file
-    WRITEF, lun_output, dPh[Nnow_rPwMax], dPh[Nnow_dPhMin], dPh[Nnow_rPwMin]
-ENDFOR
-
-; close the output file
-FREE_LUN, lun_output
-
-end
+        ; データをファイルに書き込む
+        PRINTF, lun_out, FORMAT='(I5,I5,I5)', Nnow_rPwMax, Nnow_dPhMin, Nnow_rPwMin
+        PRINTF, lun_out, FORMAT='(F12.7,F12.7,F12.7)', freq[Nnow_rPwMax], freq[Nnow_dPhMin], freq[Nnow_rPwMin]
+        PRINTF, lun_out, FORMAT='(F16.3,F16.3,F16.3)', rPw[Nnow_rPwMax], rPw[Nnow_dPhMin], rPw[Nnow_rPwMin]
+        PRINTF, lun_out, FORMAT='(F16.3,F16.3,F16.3)', dPh[Nnow_rPwMax], dPh[Nnow_dPhMin], dPh[Nnow_rPwMin]
+        PRINTF, lun_out, ''
+    ENDFOR
+;Print, 'Ev_datNos =',Ev_datNos
+    CLOSE, OutFile
+    ; ファイルを閉じる
+    FREE_LUN, lun_out
+END
