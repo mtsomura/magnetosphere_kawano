@@ -1,0 +1,58 @@
+2024/Oct/06(Sun)	./Beam01/ folder の中身の説明
+
+Beam#01 の全データが入っている。
+
+〇 ./ の
+(a) valid_RG_range_is_00-65.txt: 中身は空。filename が説明文。
+	(RG# 自体は 00-67 まであるが、
+	 このイベント時は 00, 07 は全て NaN だった。)
+(b) sd_han_vlos_2_azim01.png: (参考資料)
+	イベント (15:10-15:40 UT) を
+	含む1日のデータの "keogram" 
+	(業界用語かも? 横軸時刻、縦軸RG#、色は VLOS の大きさ)
+(c) sd_han_vlos_2_azim01.keogram.png:  (参考資料)
+	イベント (15:10-15:40 UT) の時刻範囲に
+	横軸を絞った keogram 
+(d) sd_han_vlos_2_azim01_clip_degap_deflag.keogram.png: (使用)
+	clip し (横軸を絞り)、
+	degap し (datagaps を線形補間で埋め)、
+	deflag した (NaN's も線形補間で置き換えた) データの
+	keogram。
+(e) sd_han_vlos_2_bm01rg???_clip_degap_deflag_tclip.VLOS.txt:
+	VLOSの時系列データ (これに FFT をかける)
+(f) sd_han_vlos_2_bm01rg???_clip_degap_deflag_tclip.time.txt:
+	対応する時刻のデータ (ほぼ使用しない)
+(g) sd_han_vlos_2_bm01rg???_clip_degap_deflag_tclip.FFT.txt:
+	上記時系列データに FFT をかけた結果。各行、
+	周波数[Hz]、FFT結果の実部、虚部、振幅、位相[deg]。
+(h) RG_18_17_16.VLOS_timeseries.multiplot.png :
+	RG# 18,17,16 の時系列プロットを縦に並べた図
+(i) sd_han_vlos_2_bm01.VLOS.Figs/* : (g)の振幅と位相の
+	プロットを縦に並べた図
+
+〇 ./dRG=02/ の
+(j) ./*.txt : RG# の差が 2 の FFT'ed datasets 2つから
+	パワー比(振幅比を2乗しただけ)、位相差[deg]を
+	計算したもの。
+	※ 周波数0[Hz]のパワー比と位相差は人為的に NaN に
+	　 置き換えてある(データ解析に使用しないため)。
+(k) ./rPw_dPh_vs_freq.Figs/* : (j) をプロットしたもの。
+
+〇 ./movavr_by_02/ の
+(L) ./*.txt : 
+	周波数方向に 2個の (j) データを移動平均した結果を
+	収めたフォルダ。
+
+(m) autoIDed_FLR_list.freq_movavr_by_02.txt :
+	(L) の全 files 中、FLR が自動同定された
+		file に対応するデータ: 各行、左から、
+	(m1) 2つの RG#'s のうち小さい方、
+	(m2) パワー比が極大の周波数データ番号((L)の図の左端から
+		1, 2, 3... と数える)、
+	(m3) 位相差が極小の周波数データ番号
+	(m4) パワー比がが極小の周波数データ番号
+	(m5) (m2) に対応するパワー比の値
+	(m6) (m3) に対応する位相差の値
+	(m7) (m4) に対応するパワー比の値
+
+-----
