@@ -1,4 +1,4 @@
-;PRO find_FLR_in_2_TSdata_wrapper, rPw_dPh_file, Nmovavr
+PRO find_FLR_in_2_TSdata_wrapper, rPw_dPh_file, Nmovavr
     ; フォーマットされた文字列を作成
     print,'Input Nmovavr'
     read,Nmovavr
