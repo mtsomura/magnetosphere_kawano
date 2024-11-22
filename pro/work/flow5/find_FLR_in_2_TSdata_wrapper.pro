@@ -1,4 +1,4 @@
-PRO find_FLR_in_2_TSdata_wrapper, rPw_dPh_file, Nmovavr
+;PRO find_FLR_in_2_TSdata_wrapper, rPw_dPh_file, Nmovavr
     ; フォーマットされた文字列を作成
     print,'Input Nmovavr'
     read,Nmovavr
@@ -76,14 +76,14 @@ print, 'dPh =' ,dPh
         Nnow_rPwMin = Ev_datNos[2, jk]
 
         ; データをファイルに書き込む
-        PRINTF, lun_out, FORMAT='(I5,I5,I5)', Nnow_rPwMax, Nnow_dPhMin, Nnow_rPwMin
+        PRINTF, lun_out, FORMAT='(I12,I12,I12)', Nnow_rPwMax, Nnow_dPhMin, Nnow_rPwMin
         PRINTF, lun_out, FORMAT='(F12.7,F12.7,F12.7)', freq[Nnow_rPwMax], freq[Nnow_dPhMin], freq[Nnow_rPwMin]
-        PRINTF, lun_out, FORMAT='(F16.3,F16.3,F16.3)', rPw[Nnow_rPwMax], rPw[Nnow_dPhMin], rPw[Nnow_rPwMin]
-        PRINTF, lun_out, FORMAT='(F16.3,F16.3,F16.3)', dPh[Nnow_rPwMax], dPh[Nnow_dPhMin], dPh[Nnow_rPwMin]
+        PRINTF, lun_out, FORMAT='(F12.3,F12.3,F12.3)', rPw[Nnow_rPwMax], rPw[Nnow_dPhMin], rPw[Nnow_rPwMin]
+        PRINTF, lun_out, FORMAT='(F12.3,F12.3,F12.3)', dPh[Nnow_rPwMax], dPh[Nnow_dPhMin], dPh[Nnow_rPwMin]
         PRINTF, lun_out, ''
     ENDFOR
 ;Print, 'Ev_datNos =',Ev_datNos
-    CLOSE, OutFile
+  ;  CLOSE, OutFile
     ; ファイルを閉じる
     FREE_LUN, lun_out
 END

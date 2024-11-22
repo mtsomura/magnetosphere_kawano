@@ -6,32 +6,75 @@
     ; ピークを検出
     pks_rPwMax = []
     IDed_datNos_rPwMax =[]
-    FOR i =1, Ndata -2 do begin
-	    IF (rPw[i] GT rPw[i-1]) and (rPw[i] GT rPw[i+1]) then begin
-		    pks_rPwMax = [pks_rPwMax, rPw[i]]
-		    IDed_datNos_rPwMax = [IDed_datNos_rPwMax, i] 
-            ENDIF 
+    FOR i =0, Ndata -1 do begin
+            IF (i EQ 0)  then begin
+                    IF (rPw[i] GT rPw[i+1]) then begin
+                     pks_rPwMax = [pks_rPwMax, rPw[i]]
+                     IDed_datNos_rPwMax = [IDed_datNos_rPwMax, i]
+                    ENDIF
+            ENDIF
+            IF (i EQ Ndata -1)  then begin
+                    IF (rPw[i] GT rPw[i-1]) then begin
+                     pks_rPwMax = [pks_rPwMax, rPw[i]]
+                     IDed_datNos_rPwMax = [IDed_datNos_rPwMax, i]
+                    ENDIF
+            ENDIF
+            IF (i GT 0) and (i LT Ndata -1)  then begin
+                    IF (rPw[i] GT rPw[i-1]) and (rPw[i] GT rPw[i+1]) then begin
+                     pks_rPwMax = [pks_rPwMax, rPw[i]]
+                     IDed_datNos_rPwMax = [IDed_datNos_rPwMax, i]
+                    ENDIF
+            ENDIF
     ENDFOR
 print,'pks_rPwMax =', pks_rPwMax
 print, 'IDed_datNos_rPwMax =', IDed_datNos_rPwMax
 
     pks_rPwMin = []
     IDed_datNos_rPwMin =[]
-    FOR i =1, Ndata -2 do begin
-            IF (rPw[i] LT rPw[i-1]) and (rPw[i] LT rPw[i+1]) then begin
-                    pks_rPwMin = [pks_rPwMin, rPw[i]]
-                    IDed_datNos_rPwMin = [IDed_datNos_rPwMin, i]
+    FOR i =0, Ndata -1 do begin
+            IF (i EQ 0)  then begin
+                    IF (rPw[i] LT rPw[i+1]) then begin
+                     pks_rPwMin = [pks_rPwMin, rPw[i]]
+                     IDed_datNos_rPwMin = [IDed_datNos_rPwMin, i]
+                    ENDIF
+            ENDIF
+            IF (i EQ Ndata -1)  then begin
+                    IF (rPw[i] LT rPw[i-1]) then begin
+                     pks_rPwMin = [pks_rPwMin, rPw[i]]
+                     IDed_datNos_rPwMin = [IDed_datNos_rPwMin, i]
+                    ENDIF
+            ENDIF
+            IF (i GT 0) and (i LT Ndata -1)  then begin
+                    IF (rPw[i] LT rPw[i-1]) and (rPw[i] LT rPw[i+1]) then begin
+                     pks_rPwMin = [pks_rPwMin, rPw[i]]
+                     IDed_datNos_rPwMin = [IDed_datNos_rPwMin, i]
+                    ENDIF
             ENDIF
     ENDFOR
+
 print,'pks_rPwMin =', pks_rPwMin
 print, 'IDed_datNos_rPwMin =', IDed_datNos_rPwMin
 
     pks_dPhMax = []
     IDed_datNos_dPhMax =[]
-    FOR i =1, Ndata -2 do begin
-            IF (dPh[i] GT dPh[i-1]) and (dPh[i] GT dPh[i+1]) then begin
-                    pks_dPhMax = [pks_dPhMax, dPh[i]]
-                    IDed_datNos_dPhMax = [IDed_datNos_dPhMax, i]
+    FOR i =0, Ndata -1 do begin
+            IF (i EQ 0)  then begin
+                    IF (dPh[i] GT dPh[i+1]) then begin
+                     pks_dPhMax = [pks_dPhMax, dPh[i]]
+                     IDed_datNos_dPhMax = [IDed_datNos_dPhMax, i]
+                    ENDIF
+            ENDIF
+            IF (i EQ Ndata -1)  then begin
+                    IF (dPh[i] GT dPh[i-1]) then begin
+                     pks_dPhMax = [pks_dPhMax, dPh[i]]
+                     IDed_datNos_dPhMax = [IDed_datNos_dPhMax, i]
+                    ENDIF
+            ENDIF
+            IF (i GT 0) and (i LT Ndata -1)  then begin
+                    IF (dPh[i] GT dPh[i-1]) and (dPh[i] GT dPh[i+1]) then begin
+                     pks_dPhMax = [pks_dPhMax, dPh[i]]
+                     IDed_datNos_dPhMax = [IDed_datNos_dPhMax, i]
+                    ENDIF
             ENDIF
     ENDFOR
 print,'pks_dPhMax =', pks_dPhMax
@@ -39,12 +82,27 @@ print, 'IDed_datNos_dPhMax =', IDed_datNos_dPhMax
 
     pks_dPhMin = []
     IDed_datNos_dPhMin =[]
-    FOR i =1, Ndata -2 do begin
-            IF (dPh[i] LT dPh[i-1]) and (dPh[i] LT dPh[i+1]) then begin
-                    pks_dPhMin = [pks_dPhMin, dPh[i]]
-                    IDed_datNos_dPhMin = [IDed_datNos_dPhMin, i]
+    FOR i =0, Ndata -1 do begin
+            IF (i EQ 0)  then begin
+                    IF (dPh[i] LT dPh[i+1]) then begin
+                     pks_dPhMin = [pks_dPhMin, dPh[i]]
+                     IDed_datNos_dPhMin = [IDed_datNos_dPhMin, i]
+                    ENDIF
+            ENDIF
+            IF (i EQ Ndata -1)  then begin
+                    IF (dPh[i] LT dPh[i-1]) then begin
+                     pks_dPhMin = [pks_dPhMin, dPh[i]]
+                     IDed_datNos_dPhMin = [IDed_datNos_dPhMin, i]
+                    ENDIF
+            ENDIF
+            IF (i GT 0) and (i LT Ndata -1)  then begin
+                    IF (dPh[i] LT dPh[i-1]) and (dPh[i] LT dPh[i+1]) then begin
+                     pks_dPhMin = [pks_dPhMin, dPh[i]]
+                     IDed_datNos_dPhMin = [IDed_datNos_dPhMin, i]
+                    ENDIF
             ENDIF
     ENDFOR
+
 print,'pks_dPhMin =', pks_dPhMin
 print, 'IDed_datNos_dPhMin =', IDed_datNos_dPhMin
 
