@@ -1,8 +1,12 @@
 ; this is sample code
-pro plot_sample
+PRO plot_wavenumber
+
+; execute init.pro for setting of plotting
+@init
+
 ; Open the file
 ; choose filename or the number in filename
-file = '../../To_send_from_Kawano/Example_data/rPw_dPh_vs_freq_movavr_by_02.txt'
+file = '../../To_send_from_Kawano/Example_data_correct_add/rPw_dPh_vs_freq_at_RG018_016.movavr_by_02.txt'
 OPENR, lun, file, /GET_LUN
 
 ; set 3 arrays to store the data in the file
